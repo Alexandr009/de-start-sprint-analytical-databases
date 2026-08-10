@@ -1,32 +1,34 @@
 """Шаг 3. Читаем /data/group_log.csv и грузим в MY__STAGING.group_log."""
 import os
-
 import pandas as pd
 import pendulum
 import vertica_python
 from airflow.decorators import dag
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
+from airflow.hooks.base import BaseHook
 
-# Параметры подключения берём из переменных окружения — секреты не хранятся
-# в репозитории. Перед запуском DAG задайте в окружении Airflow:
-#   VERTICA_HOST, VERTICA_PORT, VERTICA_USER, VERTICA_PASSWORD,
-#   VERTICA_DB, VERTICA_STAGING_SCHEMA
-conn_info = {
-    "host": os.environ.get("VERTICA_HOST"),
-    "port": os.environ.get("VERTICA_PORT", "5433"),
-    "user": os.environ.get("VERTICA_USER"),
-    "password": os.environ.get("VERTICA_PASSWORD"),
-    "database": os.environ.get("VERTICA_DB", "dwh"),
-    "autocommit": True,
-}
+def get_vertica_connection():
+    conn = BaseHook.get_connection('vertica_dwh')
+    return {
+        "host": conn.host,
+        "port": conn.port,
+        "user": conn.login,
+        "password": conn.password,
+        "database": conn.schema or "dwh",
+        "autocommit": True,
+    }
 
-SCHEMA = os.environ.get("VERTICA_STAGING_SCHEMA")
+SCHEMA = "VT260725214E22__STAGING"
 CHUNK = 50_000
 
 
 def load_group_log():
-    df_group_log = pd.read_csv("/data/group_log.csv")
+    conn_info = get_vertica_connection()
+     # Определяем папку текущего DAG
+    dag_folder = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(dag_folder, 'data', 'group_log.csv')
+    df_group_log = pd.read_csv(file_path)
 
     # Пустые значения превращают int-колонку во float — фиксируем тип Int64,
     # он допускает пропуски и не ломает данные при вставке.

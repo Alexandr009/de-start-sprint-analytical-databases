@@ -1,21 +1,28 @@
 """Шаг 1. Забираем group_log.csv из S3 в папку /data."""
-import os
-
+import os 
 import boto3
 import pendulum
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
+from airflow.models import Variable
 
-# Ключи доступа берём из переменных окружения — секреты не хранятся в репозитории.
-# Перед запуском DAG задайте в окружении Airflow:
-#   AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_ACCESS_KEY_ID = Variable.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = Variable.get('AWS_SECRET_ACCESS_KEY')
 
 BUCKET = "sprint6"
 
 
 def fetch_s3_file(bucket: str, key: str):
+
+     # Определяем папку, где находится текущий DAG
+    dag_folder = os.path.dirname(os.path.abspath(__file__))
+    # Путь к подпапке 'data'
+    data_folder = os.path.join(dag_folder, 'data')
+    # Создаём папку, если её нет
+    os.makedirs(data_folder, exist_ok=True)
+    # Полный путь к файлу внутри data/
+    local_path = os.path.join(data_folder, key)
+
     session = boto3.session.Session()
     s3_client = session.client(
         service_name="s3",
@@ -26,7 +33,7 @@ def fetch_s3_file(bucket: str, key: str):
     s3_client.download_file(
         Bucket=bucket,
         Key=key,
-        Filename=f"/data/{key}",
+        Filename=local_path,   
     )
 
 
