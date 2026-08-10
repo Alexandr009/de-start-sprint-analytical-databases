@@ -1,7 +1,6 @@
 -- Шаг 7.2. CTE user_group_log.
 -- Считает, сколько УНИКАЛЬНЫХ пользователей вступили (event = 'add')
 -- в каждую из 10 самых старых групп (самые ранние registration_dt в h_groups).
-
 WITH user_group_log AS (
     SELECT luga.hk_group_id,
            count(DISTINCT luga.hk_user_id) AS cnt_added_users

@@ -1,7 +1,6 @@
 -- Шаг 6. Сателлит s_auth_history.
 -- Хранит историю событий пользователя в группе.
 -- Первичного ключа нет — как и положено сателлиту в Data Vault.
-
 DROP TABLE IF EXISTS VT260725214E22__DWH.s_auth_history CASCADE;
 
 CREATE TABLE VT260725214E22__DWH.s_auth_history

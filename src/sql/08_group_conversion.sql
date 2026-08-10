@@ -3,7 +3,6 @@
 --
 -- ::numeric обязателен — без него Vertica выполнит целочисленное деление
 -- и все конверсии окажутся нулями.
-
 WITH user_group_log AS (
     SELECT luga.hk_group_id,
            count(DISTINCT luga.hk_user_id) AS cnt_added_users

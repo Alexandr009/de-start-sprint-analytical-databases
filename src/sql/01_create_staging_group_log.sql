@@ -1,6 +1,5 @@
 -- Шаг 2. Создание таблицы group_log в staging-слое.
 -- Структура повторяет формат файла /data/group_log.csv.
-
 DROP TABLE IF EXISTS VT260725214E22__STAGING.group_log CASCADE;
 
 CREATE TABLE VT260725214E22__STAGING.group_log

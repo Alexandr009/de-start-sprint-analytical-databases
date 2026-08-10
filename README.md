@@ -40,23 +40,6 @@
 | `src/sql/07_cte_user_group_log.sql` | 7.2 | CTE `user_group_log` |
 | `src/sql/08_group_conversion.sql` | 7.3 | Итоговый запрос: конверсия в первое сообщение |
 
-### Переменные окружения
-
-Секреты не хранятся в репозитории — DAG'и читают их из окружения. Перед запуском задайте:
-
-```
-# доступ к S3 (Yandex Object Storage)
-AWS_ACCESS_KEY_ID=<ключ курса>
-AWS_SECRET_ACCESS_KEY=<секрет курса>
-
-# подключение к Vertica
-VERTICA_HOST=vertica.data-engineer.education-services.ru
-VERTICA_PORT=5433
-VERTICA_USER=<логин>
-VERTICA_PASSWORD=<пароль>
-VERTICA_DB=dwh
-VERTICA_STAGING_SCHEMA=<логин в верхнем регистре>__STAGING
-```
 
 ### Порядок выполнения
 

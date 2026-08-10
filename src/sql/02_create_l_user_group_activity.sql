@@ -1,6 +1,5 @@
 -- Шаг 4. Таблица связей l_user_group_activity в слое DWH.
 -- Связывает хабы h_users и h_groups: факт активности пользователя в группе.
-
 DROP TABLE IF EXISTS VT260725214E22__DWH.l_user_group_activity CASCADE;
 
 CREATE TABLE VT260725214E22__DWH.l_user_group_activity

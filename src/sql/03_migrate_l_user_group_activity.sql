@@ -3,7 +3,6 @@
 -- DISTINCT обязателен: в логе на одну пару «пользователь-группа» приходится
 -- несколько событий (add / leave / повторный add), а линк хранит связь один раз.
 -- История событий пишется в сателлит s_auth_history.
-
 INSERT INTO VT260725214E22__DWH.l_user_group_activity
     (hk_l_user_group_activity, hk_user_id, hk_group_id, load_dt, load_src)
 SELECT DISTINCT

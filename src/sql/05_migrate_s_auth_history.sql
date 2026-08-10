@@ -3,7 +3,6 @@
 -- Источник — STAGING.group_log. Хабы h_users и h_groups нужны, чтобы получить
 -- хеш-ключи и через них выйти на нужную строку линка l_user_group_activity.
 -- Здесь DISTINCT не нужен: сателлит хранит КАЖДОЕ событие.
-
 INSERT INTO VT260725214E22__DWH.s_auth_history
     (hk_l_user_group_activity, user_id_from, event, event_dt, load_dt, load_src)
 SELECT
